@@ -1,0 +1,6 @@
+
+#263F8C - Primario
+#4973F2 - Azul Secundario
+#182540 - Azul escuro
+#71BBD9 - azul claro
+#F2F2F2 - branco
