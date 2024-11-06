@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components'
 
+import DwLogo from '../assets/DW.jpeg'
+
 import { HiMenu } from "react-icons/hi";
 
 const Nav = styled.nav`
-  background-color: #263F8C;
-  height: 5em;
+  background-color: rgb(65, 65, 65);
+  height: 120px;
 `;
 
 const Logo = styled.img`
-    width: 13em;
+  width: 100px;
 `;
 
 const Button = styled.button`
@@ -69,7 +71,7 @@ const Navbar = () => {
     <>
       <Nav className="navbar fixed-top">
         <div className="container-fluid">
-          <Logo src='https://intranet.paranoa.com.br/assets/logo/500x250.png?v=1721063576'/>
+          <Logo src={DwLogo}/>
           <Button
             className="teste"
             type="button"

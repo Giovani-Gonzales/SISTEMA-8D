@@ -5,13 +5,14 @@ import { FaFilter } from "react-icons/fa";
 const FilterContainer = styled.div`
   width: 5em; 
   padding: 1em;
-  background-color: #182540; 
+  background-color: rgb(45,45,45); 
   border-right: 1px solid #dee2e6;
-  padding-top: 7em; 
+  padding-top: 10em; 
   color: white;
   transition: width 0.6s;
   display: flex;
   justify-content: center;
+  border:none;
 
   &:hover {
     width: 20em;
