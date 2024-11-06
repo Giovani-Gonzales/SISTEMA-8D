@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components'
 
-import DwLogo from '../assets/DW.jpeg'
+import DwLogo from '../assets/DW.png'
 
 import { HiMenu } from "react-icons/hi";
 
 const Nav = styled.nav`
-  background-color: rgb(65, 65, 65);
+  background-color: rgb(45,45,45);
   height: 120px;
 `;
 
@@ -27,8 +27,8 @@ const Button = styled.button`
 `;
 
 const NavHeader = styled.div`
-    background-color: #263F8C;
-    height: 5em;
+    background-color: rgb(45,45,45); 
+    height: 120px;
 `
 
 const NavbarLink = styled.a`
