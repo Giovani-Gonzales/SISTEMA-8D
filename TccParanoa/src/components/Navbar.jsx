@@ -21,6 +21,7 @@ const Button = styled.button`
   outline: none;
   transition: transform 0.25s; 
 
+
   &:hover {
     transform: scale(0.8); 
   }
@@ -80,7 +81,7 @@ const Navbar = () => {
             aria-controls="offcanvasNavbar"
             aria-label="Toggle navigation"
           >
-            <HiMenu style={{fontSize: '2.5em', color:'white'}}/>
+            <HiMenu style={{fontSize: '2.5em', color:'rgb(253, 185, 19)'}}/>
           </Button>
           <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <NavHeader className="offcanvas-header">

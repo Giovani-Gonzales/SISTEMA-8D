@@ -1,4 +1,21 @@
 *{
-    color: rgb(253, 185, 19);
     font-family: "Exo", sans-serif;
+}
+
+
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(45, 45, 45); 
+}
+
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(253, 185, 19); 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(253, 200, 30); 
 }
