@@ -49,7 +49,7 @@ const FilterContent = styled.div`
   display: ${({ isHovered }) => (isHovered ? 'block' : 'none')};
   opacity: ${({ isHovered }) => (isHovered ? 1 : 0)};
   transition: opacity 0.3s;
-  width: 100%; /* Garante que ocupe toda a largura disponível no celular */
+  width: 100%; 
 `;
 
 const Title = styled.h3`
