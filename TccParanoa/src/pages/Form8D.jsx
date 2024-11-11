@@ -57,10 +57,6 @@ const Input = styled.input`
   font-size: 1em;
   border-radius: 4px;
 
-  ${props => props.error && `
-    border-color: red;
-  `}
-
   &::placeholder {
     color: #bbb;
   }
@@ -154,7 +150,7 @@ const Form8D = ({ questions, onClose }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/lista8d', {
+      const response = await fetch('http://localhost:3000/lista8d', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

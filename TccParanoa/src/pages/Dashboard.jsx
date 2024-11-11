@@ -152,7 +152,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/lista8d');
+        const response = await fetch('http://localhost:3000/lista8d');
         const result = await response.json();
         setData(result);
       } catch (error) {

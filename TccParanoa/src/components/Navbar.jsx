@@ -38,12 +38,8 @@ const NavbarLink = styled.a`
     weight:100%;
     padding: 10px;
     font-size: 1.5em;
-    color: black;
+    color: rgb(253, 185, 19);
     text-decoration: none;
-
-    &:hover{
-    color: #ffff;
-    }
 `
 
 const NavbarItem = styled.li`
@@ -56,12 +52,13 @@ const NavbarItem = styled.li`
     transition: background-color 0.25s;
 
     &:hover {
-        background-color: #71BBD9; 
+        background-color: rgb(253, 185, 19); 
+        color: #333;
     }
 `
 
 const NavBody = styled.div`
-    background-color: #fff;
+    background-color: #333;
     height: 5em;
     padding: 0;
 
@@ -85,13 +82,13 @@ const Navbar = () => {
           </Button>
           <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <NavHeader className="offcanvas-header">
-                <Logo src='https://intranet.paranoa.com.br/assets/logo/500x250.png?v=1721063576'/>
+                <Logo src={DwLogo}/>
                 <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </NavHeader>
             <NavBody className="offcanvas-body">
                 <ul className="navbar-nav justify-content-end flex-grow-1 mt-3">
                     <NavbarItem className="nav-item">
-                        <NavbarLink href="#">Item 1</NavbarLink>
+                        <NavbarLink className="nav-link" href="#">Item 1</NavbarLink>
                     </NavbarItem>
 
                     <NavbarItem className="nav-item">
