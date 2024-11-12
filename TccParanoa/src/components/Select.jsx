@@ -16,14 +16,25 @@ const SelectInput = styled.select`
   }
 `;
 
-const Select = ({ options, ...props }) => (
-  <SelectInput {...props}>
-    {options.map((option) => (
-      <option key={option.value} value={option.value}>
-        {option.label}
-      </option>
-    ))}
-  </SelectInput>
-);
+const Select = ({ options, onChange, ...props }) => {
+  const handleSelectChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedOption = options.find(option => option.id === selectedId);
+    if (onChange) {
+      onChange(selectedOption); 
+    }
+  };
+
+  return (
+    <SelectInput onChange={handleSelectChange} {...props}>
+      <option value="">Selecione uma opção</option> 
+      {options.map((option) => (
+        <option key={option.id} value={option.id}>
+          {option.nome}
+        </option>
+      ))}
+    </SelectInput>
+  );
+};
 
 export default Select;

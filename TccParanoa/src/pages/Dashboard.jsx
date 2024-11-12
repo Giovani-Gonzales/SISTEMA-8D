@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FaPlus, FaArrowLeft, FaArrowRight } from 'react-icons/fa'; 
 import Filter from '../components/Filter';
 import Form8D from './Form8D';
+import Navbar from '../components/Navbar'
 
 // Estilos
 const DashboardContainer = styled.div`
@@ -17,7 +18,6 @@ const DashboardContainer = styled.div`
 
 const DashboardContent = styled.div`
   padding: 2em;
-  margin-top: 120px;
   width: 100%;
   color: white;
 
@@ -142,7 +142,7 @@ const Dot = styled.span`
   }
 `;
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -174,46 +174,51 @@ const Dashboard = () => {
   const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(data.length / ITEMS_PER_PAGE)));
 
   return (
-    <DashboardContainer>
-      <Filter />
-      <DashboardContent>
-        <h1>LISTA DE 8D</h1>
-        {currentData.length === 0 ? (
-          <p style={{height:'70vh', color: 'rgb(253, 185, 19)'}}>Não há dados disponíveis.</p>
-        ) : (
-          currentData.map((rectangle, index) => (
-            <Rectangle key={index}>
-              <RectangleTitle>8D ID: {rectangle.id}</RectangleTitle>
-              <RectangleInfoItem>Pergunta 1: {rectangle['Pergunta 1']}</RectangleInfoItem>
-              <RectangleInfoItem>Pergunta 2: {rectangle['Pergunta 2']}</RectangleInfoItem>
-            </Rectangle>
-          ))
-        )}
-        <FloatingButton onClick={handleOpenForm}>
-          <FaPlus />
-        </FloatingButton>
+    <>
+      <Navbar/>
+      <DashboardContainer>
+        <Filter />
+        <DashboardContent>
+          <h1>LISTA DE 8D</h1>
+          {currentData.length === 0 ? (
+            <p style={{height:'70vh', color: 'rgb(253, 185, 19)'}}>Não há dados disponíveis.</p>
+          ) : (
+            currentData.map((rectangle, index) => (
+              <Rectangle key={index}>
+                <RectangleTitle>8D ID: {rectangle.numero8D}</RectangleTitle>
+                <RectangleInfoItem>Data de Abertura: {rectangle.dataCriacao}</RectangleInfoItem>
+                <RectangleInfoItem>Responsável: {rectangle.responsavel.nome}</RectangleInfoItem>
+                <RectangleInfoItem>Cliente: {rectangle.cliente.nome}</RectangleInfoItem>
+              </Rectangle>
+            ))
+          )}
+          <FloatingButton onClick={handleOpenForm}>
+            <FaPlus />
+          </FloatingButton>
 
-        <PageNavigation>
-          <NavButton onClick={handlePrevPage}>
-            <FaArrowLeft />
-          </NavButton>
-          
-          {Array.from({ length: Math.ceil(data.length / ITEMS_PER_PAGE) }, (_, index) => (
-            <Dot
-              key={index}
-              active={currentPage === index + 1}
-              onClick={() => handlePageChange(index + 1)}
-            />
-          ))}
+          <PageNavigation>
+            <NavButton onClick={handlePrevPage}>
+              <FaArrowLeft />
+            </NavButton>
+            
+            {Array.from({ length: Math.ceil(data.length / ITEMS_PER_PAGE) }, (_, index) => (
+              <Dot
+                key={index}
+                active={currentPage === index + 1}
+                onClick={() => handlePageChange(index + 1)}
+              />
+            ))}
 
-          <NavButton onClick={handleNextPage}>
-            <FaArrowRight />
-          </NavButton>
-        </PageNavigation>
-      </DashboardContent>
+            <NavButton onClick={handleNextPage}>
+              <FaArrowRight />
+            </NavButton>
+          </PageNavigation>
+        </DashboardContent>
 
-      {showForm && <Form8D questions={["Pergunta 1", "Pergunta 2"]} onClose={handleCloseForm} />}
-    </DashboardContainer>
+        {showForm && <Form8D onClose={handleCloseForm} />}
+      </DashboardContainer>
+    </>
+    
   );
 };
 

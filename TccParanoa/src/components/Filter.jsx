@@ -8,7 +8,6 @@ const FilterContainer = styled.div`
   width: 5em;
   padding: 1em;
   background-color: rgb(45,45,45);
-  padding-top: 10em;
   transition: 0.5s;
   display: flex;
   justify-content: center;

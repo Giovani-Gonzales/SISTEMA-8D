@@ -67,7 +67,7 @@ const NavBody = styled.div`
 const Navbar = () => {
   return (
     <>
-      <Nav className="navbar fixed-top">
+      <Nav className="navbar">
         <div className="container-fluid">
           <Logo src={DwLogo}/>
           <Button

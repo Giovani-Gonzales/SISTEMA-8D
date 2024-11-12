@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Msgbox from '../components/Msgbox.jsx';
+import CustomSelect from '../components/Select';
 
 const Overlay = styled.div`
   position: fixed;
@@ -23,12 +24,11 @@ const FormContainer = styled.div`
   padding: 2em;
   border-radius: 8px;
   color: white;
-  max-width: 400px;
-  width: 100%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   opacity: ${props => (props.isVisible ? 1 : 0)};
   transform: ${props => (props.isVisible ? 'translateY(0)' : 'translateY(20px)')};
   transition: opacity 0.3s ease, transform 0.3s ease;
+  width: auto;
 `;
 
 const FormTitle = styled.h2`
@@ -37,7 +37,7 @@ const FormTitle = styled.h2`
 `;
 
 const InputGroup = styled.div`
-  margin-bottom: 1em;
+  margin-bottom: 0;
 `;
 
 const Label = styled.label`
@@ -110,20 +110,64 @@ const Button = styled.button`
   }
 `;
 
-const Form8D = ({ questions, onClose }) => {
+const Form8D = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ numero8D: '' });
   const [message, setMessage] = useState(null);
   const [imageData, setImageData] = useState(null);
+  const [colaboradores, setColaboradores] = useState([]);
+  const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
     setIsVisible(true);
+
+    const fetchColaboradores = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/colaboradores');
+        if (response.ok) {
+          const data = await response.json();
+          setColaboradores(data.map(colaborador => ({
+            id: colaborador.id,
+            nome: colaborador.nome
+          })));
+        } else {
+          console.error('Erro ao carregar colaboradores:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar colaboradores:', error);
+      }
+    };
+
+    fetchColaboradores();
   }, []);
 
-  const handleInputChange = (e, question) => {
+  useEffect(() => {
+    setIsVisible(true);
+
+    const fetchClientes = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/clientes');
+        if (response.ok) {
+          const data = await response.json();
+          setClientes(data.map(cliente => ({
+            id: cliente.id,
+            nome: cliente.nome
+          })));
+        } else {
+          console.error('Erro ao carregar clientes:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+      }
+    };
+
+    fetchClientes();
+  }, []);
+
+  const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [question]: e.target.value,
+      numero8D: e.target.value,
     });
   };
 
@@ -132,21 +176,22 @@ const Form8D = ({ questions, onClose }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageData(reader.result); // base64 string
+        setImageData(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = async () => {
-    if (Object.values(formData).some(value => !value) || !imageData) {
+    if (!formData.numero8D || !imageData) {
       setMessage({ type: 'error', text: 'Por favor, preencha todos os campos e selecione uma imagem!' });
       return;
     }
 
     const dataToSend = {
       ...formData,
-      image: imageData, // image in base64
+      image: imageData,
+      dataCriacao: new Date().toLocaleDateString('pt-BR'),
     };
 
     try {
@@ -176,27 +221,35 @@ const Form8D = ({ questions, onClose }) => {
     setTimeout(onClose, 300);
   };
 
-  const isFormValid = Object.values(formData).length === questions.length &&
-    Object.values(formData).every(value => value.trim() !== '') && imageData;
+  const isFormValid = formData.numero8D.trim() !== '' && imageData;
 
   return (
     <>
       <Overlay isVisible={isVisible} onClick={handleClose}>
         <FormContainer isVisible={isVisible} onClick={e => e.stopPropagation()}>
           <FormTitle>Formulário 8D</FormTitle>
-          {questions.map((question, index) => (
-            <InputGroup key={index}>
-              <Label>{question}</Label>
-              <Input
-                type="text"
-                value={formData[question] || ''}
-                onChange={(e) => handleInputChange(e, question)}
-                error={!formData[question]} 
-              />
-            </InputGroup>
-          ))}
           <InputGroup>
-            <Label>Envie uma imagem:</Label>
+            <Label>N° DO 8D</Label>
+            <Input
+              type="text"
+              value={formData.numero8D || ''}
+              onChange={handleInputChange}
+            />
+            <Label>RESPONSÁVEL PELO 8D</Label>
+            <CustomSelect 
+              options={colaboradores} 
+              onChange={(selectedOption) => setFormData({ ...formData, responsavel: selectedOption })}
+              style={{marginBottom:"15px"}}
+            />
+            <Label>CLIENTE</Label>
+            <CustomSelect 
+              options={clientes} 
+              onChange={(selectedOption) => setFormData({ ...formData, cliente: selectedOption })}
+              style={{marginBottom:"15px"}}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>ENVIE UMA IMAGEM:</Label>
             <ImageInput
               type="file"
               accept="image/*"
