@@ -67,26 +67,6 @@ const Input = styled.input`
   }
 `;
 
-const ImageInput = styled.input`
-  display: block;
-  margin-top: 1em;
-  width: 100%;
-  background-color: rgb(65,65,65);
-  color: rgb(253, 185, 19);
-  padding: 0.5em;
-  border: 1px solid rgb(253, 185, 19);
-  border-radius: 4px;
-
-  &::file-selector-button {
-    background-color: rgb(253, 185, 19);
-    color: black;
-    border: none;
-    padding: 0.3em 0.5em;
-    margin-right: 0.5em;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-`;
 
 const ButtonGroup = styled.div`
   display: flex;
@@ -171,26 +151,15 @@ const Form8D = ({ onClose }) => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageData(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSubmit = async () => {
-    if (!formData.numero8D || !imageData) {
-      setMessage({ type: 'error', text: 'Por favor, preencha todos os campos e selecione uma imagem!' });
+    if (!formData.numero8D) {
+      setMessage({ type: 'error', text: 'Por favor, preencha todos os campos!' });
       return;
     }
 
     const dataToSend = {
       ...formData,
-      image: imageData,
       dataCriacao: new Date().toLocaleDateString('pt-BR'),
     };
 
@@ -221,7 +190,7 @@ const Form8D = ({ onClose }) => {
     setTimeout(onClose, 300);
   };
 
-  const isFormValid = formData.numero8D.trim() !== '' && imageData;
+  const isFormValid = formData.numero8D.trim() !== '';
 
   return (
     <>
@@ -246,14 +215,6 @@ const Form8D = ({ onClose }) => {
               options={clientes} 
               onChange={(selectedOption) => setFormData({ ...formData, cliente: selectedOption })}
               style={{marginBottom:"15px"}}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>ENVIE UMA IMAGEM:</Label>
-            <ImageInput
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
             />
           </InputGroup>
           <ButtonGroup>

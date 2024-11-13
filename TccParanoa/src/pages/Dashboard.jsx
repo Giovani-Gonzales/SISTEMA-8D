@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaPlus, FaArrowLeft, FaArrowRight } from 'react-icons/fa'; 
-import Filter from '../components/Filter';
+import Filter from '../components/Filter';  
 import Form8D from './Form8D';
 import Navbar from '../components/Navbar'
 
-// Estilos
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -146,6 +145,7 @@ const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
 
@@ -162,36 +162,50 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    setCurrentPage(1); 
+  };
+
+  const filteredData = data.filter((rectangle) =>
+    Object.entries(filters).every(([key, value]) => {
+      return value ? (typeof rectangle[key] === 'string' ? rectangle[key].toLowerCase().includes(value.toLowerCase()) : false) : true;
+    })
+  );
+
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   const handleOpenForm = () => setShowForm(true);
   const handleCloseForm = () => setShowForm(false);
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(data.length / ITEMS_PER_PAGE)));
+  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredData.length / ITEMS_PER_PAGE)));
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <DashboardContainer>
-        <Filter />
+        <Filter onFilterChange={handleFilterChange} />
+        
         <DashboardContent>
           <h1>LISTA DE 8D</h1>
+
           {currentData.length === 0 ? (
-            <p style={{height:'70vh', color: 'rgb(253, 185, 19)'}}>Não há dados disponíveis.</p>
-          ) : (
-            currentData.map((rectangle, index) => (
-              <Rectangle key={index}>
-                <RectangleTitle>8D ID: {rectangle.numero8D}</RectangleTitle>
-                <RectangleInfoItem>Data de Abertura: {rectangle.dataCriacao}</RectangleInfoItem>
-                <RectangleInfoItem>Responsável: {rectangle.responsavel.nome}</RectangleInfoItem>
-                <RectangleInfoItem>Cliente: {rectangle.cliente.nome}</RectangleInfoItem>
-              </Rectangle>
-            ))
+              <p style={{ height: '70vh', color: 'rgb(253, 185, 19)' }}>Não há dados disponíveis.</p>
+            ) : (
+              currentData.map((rectangle, index) => (
+                <Rectangle key={index}>
+                  <RectangleTitle>8D ID: {rectangle.numero8D}</RectangleTitle>
+                  <RectangleInfoItem>Data de Abertura: {rectangle.dataCriacao}</RectangleInfoItem>
+                  <RectangleInfoItem>Responsável: {rectangle.responsavel.nome}</RectangleInfoItem>
+                  <RectangleInfoItem>Cliente: {rectangle.cliente.nome}</RectangleInfoItem>
+                </Rectangle>
+              ))
           )}
+
           <FloatingButton onClick={handleOpenForm}>
             <FaPlus />
           </FloatingButton>
@@ -200,8 +214,8 @@ const Dashboard = () => {
             <NavButton onClick={handlePrevPage}>
               <FaArrowLeft />
             </NavButton>
-            
-            {Array.from({ length: Math.ceil(data.length / ITEMS_PER_PAGE) }, (_, index) => (
+
+            {Array.from({ length: Math.ceil(filteredData.length / ITEMS_PER_PAGE) }, (_, index) => (
               <Dot
                 key={index}
                 active={currentPage === index + 1}
@@ -218,7 +232,6 @@ const Dashboard = () => {
         {showForm && <Form8D onClose={handleCloseForm} />}
       </DashboardContainer>
     </>
-    
   );
 };
 
