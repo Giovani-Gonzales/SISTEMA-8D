@@ -38,6 +38,15 @@
         "nome": "TENNECO"
       },
       "dataCriacao": "13/11/2024"
+    },
+    {
+      "id": "b438",
+      "numero8D": "Fabricinho",
+      "cliente": {
+        "id": "16",
+        "nome": "Renault"
+      },
+      "dataCriacao": "14/11/2024"
     }
   ],
   "clientes": [
@@ -150,6 +159,20 @@
     {
       "id": "e005",
       "nome": "Fábio Medina"
+    }
+  ],
+  "accounts": [
+    {
+      "email": "admin",
+      "password": "admin",
+      "department": "controladoria",
+      "company": "paranoa"
+    },
+    {
+      "email": "garaujo@paranoa.com.br",
+      "password": "12345",
+      "department": "ic",
+      "company": "paranoa"
     }
   ]
 }
