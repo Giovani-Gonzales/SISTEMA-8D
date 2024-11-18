@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Para redirecionar
+import { useAuth } from './AuthContext'; // Contexto de autenticação
 import styled from 'styled-components';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import DwLogo from '../assets/DW.png';
-import Msgbox from '../components/Msgbox';
-import { useAuth } from './AuthContext';
+import DwLogo from '../assets/logo-datawake-w.png'; // Substitua pelo caminho correto
+import Msgbox from '../components/Msgbox'; // Mensagem de feedback
 
+// Estilos
 const ContainerLogin = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; 
-    background-color: rgb(45,45,45); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgb(45, 45, 45);
 `;
 
 const StyledInput = styled.input`
   width: 100%;
   padding: 0.5em;
-  padding-right: 2.5em; /* Espaço para o ícone do olho */
+  padding-right: 2.5em;
   margin-bottom: 1em;
   background-color: rgb(65, 65, 65);
   border: 1px solid rgb(253, 185, 19);
@@ -43,19 +45,20 @@ const EyeIcon = styled.div`
   position: absolute;
   top: 39%;
   right: 10px;
-  transform: translateY(-50%); /* Centraliza o ícone verticalmente */
+  transform: translateY(-50%);
   color: rgb(253, 185, 19);
   cursor: pointer;
 `;
 
 const Logo = styled.img`
-  width: 70px;
+  width: 250px;
+  margin-bottom: 30px;
 `;
 
 const BoxLogin = styled.div`
-    padding: 20px;
-    border-radius: 8px;
-    width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
 `;
 
 const FilterLabel = styled.label`
@@ -70,16 +73,20 @@ const SectionDivider = styled.hr`
   border: none;
   border-top: 2px solid rgb(253, 185, 19);
   margin: 1em 0;
-  flex-direction: column;
 `;
 
 const FormBody = styled.div`
-    text-align: center;
+  text-align: center;
+`;
+
+const Subtitle = styled.div`
+  color: #fff;
+  margin-bottom: 20px;
 `;
 
 const ButtonForm = styled.button`
   background-color: rgb(253, 185, 19);
-  color: rgb(45,45,45);
+  color: rgb(45, 45, 45);
   padding: 0.5em 1.5em;
   border: none;
   border-radius: 4px;
@@ -92,16 +99,18 @@ const ButtonForm = styled.button`
   }
 `;
 
+// Componente principal
 const LoginPage = () => {
   const [viewPassword, setViewPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [msgBoxVisible, setMsgBoxVisible] = useState(false); 
+  const [msgBoxVisible, setMsgBoxVisible] = useState(false);
   const [msgSimbol, setMsgSimbol] = useState('');
-  
-  const { login } = useAuth(); // Obtendo a função login do contexto
-  
+
+  const { login } = useAuth(); // Função de login do AuthContext
+  const navigate = useNavigate(); // Para navegação entre páginas
+
   const toggleViewPassword = () => {
     setViewPassword(!viewPassword);
   };
@@ -110,28 +119,34 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/accounts');
+      const response = await fetch('http://localhost:3000/accounts'); // Substitua pela sua API
       const accounts = await response.json();
 
-      const account = accounts.find(acc => acc.email === email && acc.password === password);
+      // Verificar credenciais
+      const account = accounts.find(
+        (acc) => acc.email === email && acc.password === password
+      );
 
       if (account) {
         setErrorMessage('Login Bem Sucedido!');
         setMsgSimbol('success');
         setMsgBoxVisible(true);
-        login(); // Chamando o login do contexto para redirecionar
-        setTimeout(() => setMsgBoxVisible(false), 3000); 
+        login(); 
+        setTimeout(() => {
+          setMsgBoxVisible(false);
+          navigate('/dashboard'); 
+        }, 1000);
       } else {
         setErrorMessage('Email ou senha inválidos!');
         setMsgSimbol('error');
         setMsgBoxVisible(true);
-        setTimeout(() => setMsgBoxVisible(false), 3000);  
+        setTimeout(() => setMsgBoxVisible(false), 3000);
       }
     } catch (error) {
       setErrorMessage('Erro ao conectar ao servidor. Tente novamente mais tarde.');
       setMsgSimbol('error');
-      setMsgBoxVisible(true);  
-      setTimeout(() => setMsgBoxVisible(false), 3000);  
+      setMsgBoxVisible(true);
+      setTimeout(() => setMsgBoxVisible(false), 3000);
     }
   };
 
@@ -139,9 +154,12 @@ const LoginPage = () => {
     <ContainerLogin>
       <BoxLogin>
         <FormBody>
-          <Logo src={DwLogo} />
-          <p></p>
-          
+          <Logo src={DwLogo} alt="Logo" />
+          <Subtitle>
+            DIGITE SEU LOGIN E SENHA PARA ENTRAR NO{' '}
+            <b style={{ color: 'rgb(253,185,19)' }}>SISTEMA 8D</b>
+          </Subtitle>
+
           <FilterLabel>Login</FilterLabel>
           <StyledInput
             type="text"
@@ -149,7 +167,7 @@ const LoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          
+
           <FilterLabel>Senha</FilterLabel>
           <PasswordContainer>
             <StyledInput

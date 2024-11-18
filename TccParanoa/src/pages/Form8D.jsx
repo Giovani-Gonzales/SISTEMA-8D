@@ -103,7 +103,7 @@ const Form8D = ({ onClose }) => {
 
     const fetchColaboradores = async () => {
       try {
-        const response = await fetch('http://localhost:3000/colaboradores');
+        const response = await fetch('http://localhost:3000/responsavel');
         if (response.ok) {
           const data = await response.json();
           setColaboradores(data.map(colaborador => ({

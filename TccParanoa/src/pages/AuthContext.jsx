@@ -1,20 +1,30 @@
-import React, { createContext, useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
 
+  // Recupera o estado de autenticação do localStorage ao inicializar o app
+  useEffect(() => {
+    const storedAuth = localStorage.getItem('isAuthenticated');
+    if (storedAuth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  // Função para realizar login
   const login = () => {
     setIsAuthenticated(true);
-    navigate('/dashboard'); // Redireciona após o login
+    localStorage.setItem('isAuthenticated', 'true'); // Salva no localStorage
   };
 
+  // Função para realizar logout
   const logout = () => {
     setIsAuthenticated(false);
-    navigate('/login'); // Redireciona para o login após o logout
+    localStorage.removeItem('isAuthenticated'); // Remove do localStorage
   };
 
   return (
@@ -23,5 +33,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
