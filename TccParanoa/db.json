@@ -51,6 +51,136 @@
         "nome": "STELLANTIS"
       },
       "dataCriacao": "18/11/2024"
+    },
+    {
+      "id": "f039",
+      "numero8D": "cesar",
+      "responsavel": {
+        "id": "e002",
+        "nome": "Brenda Alves"
+      },
+      "cliente": {
+        "id": "23",
+        "nome": "MAN"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "47a8",
+      "numero8D": "tayla",
+      "responsavel": {
+        "id": "e004",
+        "nome": "Tayla Vitória"
+      },
+      "cliente": {
+        "id": "04",
+        "nome": "Fiat"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "9b2f",
+      "numero8D": "CESAR KKKKKKK",
+      "responsavel": {
+        "id": "e004",
+        "nome": "Tayla Vitória"
+      },
+      "cliente": {
+        "id": "32",
+        "nome": "Mercedes"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "2bc9",
+      "numero8D": "VITOR ABILA",
+      "responsavel": {
+        "id": "e001",
+        "nome": "Giovani Gonzales"
+      },
+      "cliente": {
+        "id": "18",
+        "nome": "SCANIA"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "40d5",
+      "numero8D": "22222",
+      "cliente": {
+        "id": "04",
+        "nome": "Fiat"
+      },
+      "responsavel": {
+        "id": "e002",
+        "nome": "Brenda Alves"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "220a",
+      "numero8D": "11111231313141516661",
+      "responsavel": {
+        "id": "e001",
+        "nome": "Giovani Gonzales"
+      },
+      "cliente": {
+        "id": "41",
+        "nome": "TENNECO"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "7c8c",
+      "numero8D": "0000090909090",
+      "responsavel": {
+        "id": "e004",
+        "nome": "Tayla Vitória"
+      },
+      "cliente": {
+        "id": "75",
+        "nome": "Mitsubishi"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "7931",
+      "numero8D": "admin",
+      "responsavel": {
+        "id": "e003",
+        "nome": "Alyne Viana"
+      },
+      "cliente": {
+        "id": "34",
+        "nome": "STELLANTIS"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "1d70",
+      "numero8D": "2131231",
+      "responsavel": {
+        "id": "e003",
+        "nome": "Alyne Viana"
+      },
+      "cliente": {
+        "id": "34",
+        "nome": "STELLANTIS"
+      },
+      "dataCriacao": "19/11/2024"
+    },
+    {
+      "id": "f2dd",
+      "numero8D": "CESAR4646",
+      "responsavel": {
+        "id": "e003",
+        "nome": "Alyne Viana"
+      },
+      "cliente": {
+        "id": "015",
+        "nome": "Flexfab"
+      },
+      "dataCriacao": "19/11/2024"
     }
   ],
   "clientes": [

@@ -72,6 +72,7 @@ const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 1.5em;
+  gap:4em;
 `;
 
 const Button = styled.button`
@@ -188,6 +189,7 @@ const Form8D = ({ onClose }) => {
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(onClose, 300);
+    window.location.reload(); 
   };
 
   const isFormValid = formData.numero8D.trim() !== '';

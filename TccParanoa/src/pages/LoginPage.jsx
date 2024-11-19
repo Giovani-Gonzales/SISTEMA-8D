@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirecionar
-import { useAuth } from './AuthContext'; // Contexto de autenticação
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Hook para acessar o contexto
 import styled from 'styled-components';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import DwLogo from '../assets/logo-datawake-w.png'; // Substitua pelo caminho correto
-import Msgbox from '../components/Msgbox'; // Mensagem de feedback
+import DwLogo from '../assets/logo-datawake-w.png'; // Caminho correto da logo
+import Msgbox from '../components/Msgbox';
 
 // Estilos
 const ContainerLogin = styled.div`
@@ -15,10 +15,27 @@ const ContainerLogin = styled.div`
   background-color: rgb(45, 45, 45);
 `;
 
+const BoxLogin = styled.div`
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  text-align: center;
+`;
+
+const Logo = styled.img`
+  width: 200px;
+  margin-bottom: 20px;
+`;
+
+const IntroText = styled.p`
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.2em;
+`;
+
 const StyledInput = styled.input`
   width: 100%;
   padding: 0.5em;
-  padding-right: 2.5em;
   margin-bottom: 1em;
   background-color: rgb(65, 65, 65);
   border: 1px solid rgb(253, 185, 19);
@@ -43,45 +60,18 @@ const PasswordContainer = styled.div`
 
 const EyeIcon = styled.div`
   position: absolute;
-  top: 39%;
+  top: 15%;
   right: 10px;
-  transform: translateY(-50%);
   color: rgb(253, 185, 19);
   cursor: pointer;
 `;
 
-const Logo = styled.img`
-  width: 250px;
-  margin-bottom: 30px;
-`;
-
-const BoxLogin = styled.div`
-  padding: 20px;
-  border-radius: 8px;
-  width: 500px;
-`;
-
 const FilterLabel = styled.label`
-  display: flex;
-  align-items: center;
+  display: block;
   font-size: 1.2em;
   color: rgb(253, 185, 19);
   margin-bottom: 10px;
-`;
-
-const SectionDivider = styled.hr`
-  border: none;
-  border-top: 2px solid rgb(253, 185, 19);
-  margin: 1em 0;
-`;
-
-const FormBody = styled.div`
-  text-align: center;
-`;
-
-const Subtitle = styled.div`
-  color: #fff;
-  margin-bottom: 20px;
+  text-align: left;
 `;
 
 const ButtonForm = styled.button`
@@ -91,7 +81,6 @@ const ButtonForm = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
   width: 100%;
 
   &:hover {
@@ -99,43 +88,51 @@ const ButtonForm = styled.button`
   }
 `;
 
-// Componente principal
+// Página de Login
 const LoginPage = () => {
   const [viewPassword, setViewPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [msgBoxVisible, setMsgBoxVisible] = useState(false);
-  const [msgSimbol, setMsgSimbol] = useState('');
+  const [msgSimbol, setMsgSimbol] = useState(''); // Para mostrar o ícone correto no Msgbox
 
-  const { login } = useAuth(); // Função de login do AuthContext
-  const navigate = useNavigate(); // Para navegação entre páginas
+  const { login, token } = useAuth(); // Hook para acessar o token do AuthContext
+  const navigate = useNavigate();
 
-  const toggleViewPassword = () => {
-    setViewPassword(!viewPassword);
-  };
+  // Verifica se o usuário já está logado
+  useEffect(() => {
+    if (token) {
+      navigate('/dashboard'); // Se já tiver token, vai para o dashboard
+    }
+  }, [token, navigate]);
+
+  const toggleViewPassword = () => setViewPassword(!viewPassword);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch('http://localhost:3000/accounts'); // Substitua pela sua API
+      const response = await fetch('http://localhost:3000/accounts');
       const accounts = await response.json();
-
-      // Verificar credenciais
-      const account = accounts.find(
-        (acc) => acc.email === email && acc.password === password
+  
+      // Verifica as credenciais
+      const user = accounts.find(
+        (account) => account.email === email && account.password === password
       );
-
-      if (account) {
+  
+      if (user) {
+        const token = user.id; // Usando o `id` como token
+        localStorage.setItem('authToken', token);
+        login(token); // Atualiza o estado global
+  
         setErrorMessage('Login Bem Sucedido!');
         setMsgSimbol('success');
         setMsgBoxVisible(true);
-        login(); 
-        setTimeout(() => {
-          setMsgBoxVisible(false);
-          navigate('/dashboard'); 
-        }, 1000);
+  
+        setMsgBoxVisible(true);
+        navigate('/dashboard')
+        window.location.reload();    
       } else {
         setErrorMessage('Email ou senha inválidos!');
         setMsgSimbol('error');
@@ -143,23 +140,23 @@ const LoginPage = () => {
         setTimeout(() => setMsgBoxVisible(false), 3000);
       }
     } catch (error) {
-      setErrorMessage('Erro ao conectar ao servidor. Tente novamente mais tarde.');
+      setErrorMessage('Erro ao conectar ao servidor.');
       setMsgSimbol('error');
       setMsgBoxVisible(true);
       setTimeout(() => setMsgBoxVisible(false), 3000);
     }
   };
+  
 
   return (
     <ContainerLogin>
       <BoxLogin>
-        <FormBody>
-          <Logo src={DwLogo} alt="Logo" />
-          <Subtitle>
-            DIGITE SEU LOGIN E SENHA PARA ENTRAR NO{' '}
-            <b style={{ color: 'rgb(253,185,19)' }}>SISTEMA 8D</b>
-          </Subtitle>
+        <Logo src={DwLogo} alt="Logo DataWake" />
+        <IntroText>
+          Bem-vindo ao <b style={{ color: 'rgb(253, 185, 19)' }}>SISTEMA 8D</b>!
+        </IntroText>
 
+        <form onSubmit={handleLogin}>
           <FilterLabel>Login</FilterLabel>
           <StyledInput
             type="text"
@@ -167,7 +164,6 @@ const LoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-
           <FilterLabel>Senha</FilterLabel>
           <PasswordContainer>
             <StyledInput
@@ -180,13 +176,11 @@ const LoginPage = () => {
               {viewPassword ? <FaEyeSlash /> : <FaEye />}
             </EyeIcon>
           </PasswordContainer>
-
-          <SectionDivider />
-          <ButtonForm onClick={handleLogin}>Entrar</ButtonForm>
-        </FormBody>
+          <ButtonForm type="submit">Entrar</ButtonForm>
+        </form>
       </BoxLogin>
 
-      <Msgbox message={errorMessage} type={msgSimbol} visible={msgBoxVisible} />
+      <Msgbox message={errorMessage} type={msgSimbol} visible={msgBoxVisible && errorMessage} />
     </ContainerLogin>
   );
 };

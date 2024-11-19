@@ -39,6 +39,7 @@ const Rectangle = styled.div`
   border: 1px solid transparent;
   transition: 0.25s;
   padding: 2em;
+  cursor: pointer;
 
   &:hover {
     border: 1px solid #fcb923;
@@ -75,12 +76,26 @@ const FloatingButton = styled.button`
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.25s;
+
+
+  &:hover{
+    transform: scale(0.9);
+  }
 `;
 
 const PageNavigation = styled.div`
+  position: fixed;
+  bottom: 2em;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  margin-top: 2em;
+  gap: 10px; 
+  z-index: 1; 
+  background-color: rgb(45,45,45);
+  padding:5px;
+  border-radius:100px;
 `;
 
 const NavButton = styled.button`
@@ -92,6 +107,11 @@ const NavButton = styled.button`
 
   &:hover {
     color: #fcb923;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 `;
 
@@ -105,7 +125,6 @@ const Dot = styled.span`
   cursor: pointer;
 `;
 
-// Filtro de estilos
 const FilterContainer = styled.div`
   margin-bottom: 2em;
   display: flex;
@@ -117,7 +136,7 @@ const FilterContainer = styled.div`
 `;
 
 const FilterLabel = styled.label`
-  color: white;
+  color: #fcb923;
   font-size: 1em;
   margin-bottom: 0.5em;
   display: block;
@@ -212,39 +231,42 @@ const Dashboard = () => {
   // Função para aplicar filtros
   const applyFilters = () => {
     let filtered = data;
-
+  
     // Filtro por nome do 8D
     if (search) {
       filtered = filtered.filter((item) =>
         item.numero8D.toLowerCase().includes(search.toLowerCase())
       );
     }
-
+  
     // Filtro por cliente
     if (clientFilter) {
       filtered = filtered.filter(
         (item) => item.cliente.nome === clientFilter
       );
     }
-
+  
     // Filtro por responsável
     if (responsibleFilter) {
       filtered = filtered.filter(
         (item) => item.responsavel.nome === responsibleFilter
       );
     }
-
+  
     // Filtro por data (mais novo para mais velho)
     if (dateFilter === 'newest') {
+      // Ordena por data (mais novo primeiro)
       filtered = filtered.sort((a, b) =>
         new Date(b.dataCriacao) - new Date(a.dataCriacao)
       );
+      // Inverte a lista (último item primeiro, primeiro item último)
+      filtered = filtered.reverse();
     } else if (dateFilter === 'oldest') {
       filtered = filtered.sort((a, b) =>
         new Date(a.dataCriacao) - new Date(b.dataCriacao)
       );
     }
-
+  
     setFilteredData(filtered);
     setCurrentPage(1); // Reseta a página ao aplicar filtro
   };
@@ -327,7 +349,7 @@ const Dashboard = () => {
         </FilterContainer>
         
         <DashboardContent>
-          <h1>LISTA DE 8D</h1>  
+          <h1 style={{color:'#fcb923'}}>LISTA DE 8D</h1>  
         </DashboardContent>
         <DashboardContent>
           {loading ? (
