@@ -3,6 +3,8 @@ import { FaPlus, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import Form8D from './Form8D';
 import Navbar from '../components/Navbar';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -183,6 +185,7 @@ const Select = styled.select`
 const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
+  
   const [data, setData] = useState([]); // Dados obtidos da API lista8d
   const [clientes, setClientes] = useState([]); // Dados obtidos da API clientes
   const [responsaveis, setResponsaveis] = useState([]); // Dados obtidos da API responsavel
@@ -190,32 +193,36 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedRectangle, setSelectedRectangle] = useState(null);
+
+  const navigate = useNavigate();
+
 
   // Filtros
   const [search, setSearch] = useState('');
   const [clientFilter, setClientFilter] = useState('');
   const [responsibleFilter, setResponsibleFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState('newest');
+  const [dateFilter, setDateFilter] = useState('');
 
   // Busca os dados das APIs
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
       try {
-        // Puxa dados de 8D
         const response8D = await fetch('http://localhost:3000/lista8d');
         const result8D = await response8D.json();
-        setData(result8D);
-        setFilteredData(result8D); // Inicializa com todos os dados
-
-        // Puxa dados de clientes
+  
+        // Inverte a ordem para começar com os mais novos
+        setData(result8D.reverse());
+        setFilteredData(result8D.reverse()); // Filtrados também começam com os mais novos
+  
         const responseClientes = await fetch('http://localhost:3000/clientes');
         const resultClientes = await responseClientes.json();
         setClientes(resultClientes);
-
-        // Puxa dados de responsáveis
-        const responseResponsaveis = await fetch('http://localhost:3000/responsavel');
+  
+        const responseResponsaveis = await fetch(
+          'http://localhost:3000/responsavel'
+        );
         const resultResponsaveis = await responseResponsaveis.json();
         setResponsaveis(resultResponsaveis);
       } catch (error) {
@@ -224,7 +231,7 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
 
@@ -342,6 +349,7 @@ const Dashboard = () => {
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)} // Alterado aqui
             >
+              <option selected>Filtrar por Data</option>
               <option value="newest">Mais Novo</option>
               <option value="oldest">Mais Antigo</option>
             </Select>
@@ -349,7 +357,7 @@ const Dashboard = () => {
         </FilterContainer>
         
         <DashboardContent>
-          <h1 style={{color:'#fcb923'}}>LISTA DE 8D</h1>  
+          <h1 style={{ color: '#fcb923' }}>LISTA DE 8D</h1>
         </DashboardContent>
         <DashboardContent>
           {loading ? (
@@ -362,7 +370,10 @@ const Dashboard = () => {
             </p>
           ) : (
             currentData.map((rectangle) => (
-              <Rectangle key={rectangle.id}>
+              <Rectangle
+                onClick={() => navigate(`/detalhes/${rectangle.id}`)} // Navega para a página de detalhes
+                key={rectangle.id}
+              >
                 <RectangleTitle>8D ID: {rectangle.numero8D}</RectangleTitle>
                 <RectangleInfoItem>
                   Data de Abertura: {rectangle.dataCriacao}
@@ -395,15 +406,13 @@ const Dashboard = () => {
                 />
               ))}
 
-              <NavButton
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-              >
+              <NavButton onClick={handleNextPage} disabled={currentPage === totalPages}>
                 <FaArrowRight />
               </NavButton>
             </PageNavigation>
           )}
         </DashboardContent>
+
 
         {showForm && <Form8D onClose={handleCloseForm} />}
       </DashboardContainer>

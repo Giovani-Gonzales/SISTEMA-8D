@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import DwLogo from '../assets/DW.png';
 import { HiMenu } from "react-icons/hi";
-import { useNavigate } from 'react-router-dom'; // Para navegação
-import { useAuth } from '../pages/AuthContext'; // Para acessar o contexto de autenticação
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../pages/AuthContext';
 
 const Nav = styled.nav`
   background-color: rgb(45,45,45);
@@ -48,6 +48,7 @@ const NavbarItem = styled.li`
   display: flex;
   align-items: center;
   transition: background-color 0.25s;
+  cursor: pointer;
 
   &:hover {
     background-color: rgb(253, 185, 19); 
