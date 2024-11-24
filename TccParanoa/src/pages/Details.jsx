@@ -6,160 +6,157 @@ import Navbar from '../components/Navbar';
 const Container = styled.div`
   padding: 2em;
   color: white;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const Title = styled.h1`
   color: #fcb923;
-`;
-
-const BackButton = styled.button`
-  margin-top: 1em;
-  padding: 0.5em 1em;
-  background-color: #fcb923;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-
-  &:hover {
-    background-color: #d89c1b;
-  }
-`;
-
-const EditButton = styled(BackButton)`
-  margin-left: 1em;
-  background-color: #4caf50;
-
-  &:hover {
-    background-color: #45a049;
-  }
-`;
-
-const SaveButton = styled(BackButton)`
-  background-color: #007bff;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const CancelButton = styled(BackButton)`
-  background-color: #f44336;
-
-  &:hover {
-    background-color: #d32f2f;
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  border: 1px solid #fcb923;
-  border-radius: 4px;
-  background-color: rgb(45, 45, 45);
-  color: white;
-  font-size: 1em;
-
-  &:focus {
-    outline: none;
-    border-color: #fcb923;
-  }
-
-  ::placeholder {
-    color: #ccc;
-  }
-`;
-
-const Select = styled.select`
-  padding: 0.5em;
-  margin-bottom: 1em;
-  width: 100%;
-  border: 1px solid #fcb923;
-  border-radius: 4px;
-  background-color: rgb(45, 45, 45);
-  color: white;
-
-  &:focus {
-    outline: none;
-    border-color: #fcb923;
-  }
-`;
-
-const ImageUploadContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
+  text-align: center;
   margin-bottom: 2em;
 `;
 
+const Label = styled.label`
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5em;
+  color: #fcb923;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1em;
+  justify-content: flex-end;
+  margin-top: 2em;
+`;
+
+const FlexRow = styled.div`
+  display: flex;
+  gap: 2em;
+  flex-wrap: wrap;
+  align-items: flex-start;
+`;
+
+const ImageUploadContainer = styled(FlexRow)`
+  justify-content: space-between;
+`;
+
 const ImageArea = styled.div`
-  width: 48%;
+  flex: 1;
+  max-width: 48%;
+  background-color: ${(props) => (props.red ? '#f44336' : '#4caf50')};
   padding: 1em;
   border-radius: 4px;
   text-align: center;
-  background-color: ${(props) => (props.red ? 'red' : 'green')};
   color: white;
   border: 1px solid #fcb923;
+  position: relative;
+
+  aspect-ratio: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.25s;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  img {
+    max-width: 90%; 
+    max-height: 90%; 
+    border-radius: 4px;
+    object-fit: contain; 
+    margin-top: 1em;
+  }
 
   input {
     display: none;
   }
 
   label {
-    cursor: pointer;
     display: inline-block;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 1em;
-    border-radius: 4px;
-    font-size: 1.2em;
-    color: white;
     margin-top: 1em;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.7em 1.5em;
+    border-radius: 4px;
+    font-size: 1em;
+    color: white;
     transition: 0.3s;
   }
 
   label:hover {
     background-color: rgba(0, 0, 0, 0.7);
   }
+`;
 
-  img {
+const FieldContainer = styled.div`
+  margin-bottom: 1.5em;
+
+  textarea,
+  select {
     width: 100%;
-    height: auto;
+    padding: 0.8em;
+    margin-top: 0.5em;
+    border: 1px solid #fcb923;
     border-radius: 4px;
-    margin-top: 1em;
+    background-color: rgb(45, 45, 45);
+    color: white;
+  }
+
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: #fcb923;
   }
 `;
 
-const ImageViewContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
-  margin-bottom: 2em;
+const ResponsiveGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  margin-top: 2em;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const ImageViewArea = styled.div`
-  width: 48%;
-  padding: 1em;
-  border-radius: 4px;
-  text-align: center;
-  background-color: ${(props) => (props.red ? 'red' : 'green')};
-  color: white;
-  border: 1px solid #fcb923;
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 
   img {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-top: 1em;
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  background: none;
+  color: white;
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    color: #fcb923;
   }
 `;
 
@@ -170,23 +167,23 @@ const Details = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(null);
-  const [responsaveis, setResponsaveis] = useState([]); // Lista de responsáveis
+  const [responsaveis, setResponsaveis] = useState([]);
   const [imageBefore, setImageBefore] = useState(null);
   const [imageAfter, setImageAfter] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalImage, setModalImage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Carregar dados do 8D
         const response = await fetch(`http://localhost:3000/lista8d/${id}`);
         const result = await response.json();
         setData(result);
         setEditedData(result);
-        setImageBefore(result.imagemAntes); // Preenche com a imagem existente, se houver
-        setImageAfter(result.imagemDepois); // Preenche com a imagem existente, se houver
+        setImageBefore(result.imagemAntes);
+        setImageAfter(result.imagemDepois);
 
-        // Carregar lista de responsáveis
         const responseResponsaveis = await fetch('http://localhost:3000/responsavel');
         const resultResponsaveis = await responseResponsaveis.json();
         setResponsaveis(resultResponsaveis);
@@ -204,7 +201,7 @@ const Details = () => {
 
   const handleCancel = () => {
     setIsEditing(false);
-    setEditedData(data); // Restaura os dados originais
+    setEditedData(data);
   };
 
   const handleSave = async () => {
@@ -238,10 +235,20 @@ const Details = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); // Converte a imagem para base64
+        setImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleImageClick = (image) => {
+    setModalImage(image);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalImage('');
   };
 
   if (loading) {
@@ -261,7 +268,7 @@ const Details = () => {
         <Navbar />
         <Container>
           <p>Item não encontrado.</p>
-          <BackButton onClick={() => navigate('/dashboard')}>Voltar</BackButton>
+          <button onClick={() => navigate('/dashboard')}>Voltar</button>
         </Container>
       </>
     );
@@ -272,39 +279,50 @@ const Details = () => {
       <Navbar />
       <Container>
         <Title>Detalhes do 8D - {data.numero8D}</Title>
-
         {isEditing ? (
           <>
-            <p>
-              <strong>Data de Abertura:</strong> {data.dataCriacao}
-            </p>
-            <p>
-              <strong>Cliente:</strong> {data.cliente.nome}
-            </p>
+            <ResponsiveGrid>
+              <FieldContainer>
+                <Label>Data de Abertura:</Label>
+                <p>{data.dataCriacao}</p>
+              </FieldContainer>
+              <FieldContainer>
+                <Label>Cliente:</Label>
+                <p>{data.cliente.nome}</p>
+              </FieldContainer>
+            </ResponsiveGrid>
+            <FieldContainer>
+              <Label>Responsável:</Label>
+              <select
+                value={editedData.responsavel.id}
+                onChange={(e) =>
+                  handleChange('responsavel', {
+                    ...editedData.responsavel,
+                    id: e.target.value,
+                    nome: responsaveis.find((resp) => resp.id === parseInt(e.target.value))?.nome,
+                  })
+                }
+              >
+                {responsaveis.map((responsavel) => (
+                  <option key={responsavel.id} value={responsavel.id}>
+                    {responsavel.nome}
+                  </option>
+                ))}
+              </select>
+            </FieldContainer>
 
-            <label>Responsável</label>
-            <Select
-              value={editedData.responsavel.id} 
-              onChange={(e) =>
-                handleChange('responsavel', {
-                  ...editedData.responsavel,
-                  id: e.target.value,
-                  nome: responsaveis.find((resp) => resp.id === parseInt(e.target.value))?.nome,
-                })
-              }
-            >
-              {responsaveis.map((responsavel) => (
-                <option key={responsavel.id} value={responsavel.id}>
-                  {responsavel.nome}
-                </option>
-              ))}
-            </Select>
-
-            <label>Descrição</label>
-            <TextArea
-              value={editedData.descricao}
-              onChange={(e) => handleChange('descricao', e.target.value)}
-            />
+            <FieldContainer>
+              <Label>Descrição:</Label>
+              {isEditing ? (
+                <textarea
+                  rows="5"
+                  value={editedData.descricao}
+                  onChange={(e) => handleChange('descricao', e.target.value)}
+                />
+              ) : (
+                <p style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>{data.descricao}</p>
+              )}
+            </FieldContainer>
 
             <ImageUploadContainer>
               <ImageArea red>
@@ -314,7 +332,6 @@ const Details = () => {
                 </label>
                 {imageBefore && <img src={imageBefore} alt="Imagem Antes" />}
               </ImageArea>
-
               <ImageArea>
                 <label>
                   Selecione a imagem "Depois"
@@ -324,38 +341,57 @@ const Details = () => {
               </ImageArea>
             </ImageUploadContainer>
 
-            <SaveButton onClick={handleSave}>Salvar</SaveButton>
-            <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
+            <ButtonGroup>
+              <button onClick={handleSave}>Salvar</button>
+              <button onClick={handleCancel}>Cancelar</button>
+            </ButtonGroup>
           </>
         ) : (
           <>
-            <p>
-              <strong>Data de Abertura:</strong> {data.dataCriacao}
-            </p>
-            <p>
-              <strong>Cliente:</strong> {data.cliente.nome}
-            </p>
-            <p>
-              <strong>Responsável:</strong> {data.responsavel.nome}
-            </p>
-            <p>
-              <strong>Descrição:</strong> {data.descricao}
-            </p>
+            <ResponsiveGrid>
+              <FieldContainer>
+                <Label>Data de Abertura:</Label>
+                <p>{data.dataCriacao}</p>
+              </FieldContainer>
+              <FieldContainer>
+                <Label>Cliente:</Label>
+                <p>{data.cliente.nome}</p>
+              </FieldContainer>
+            </ResponsiveGrid>
+            <FieldContainer>
+              <Label>Responsável:</Label>
+              <p>{data.responsavel.nome}</p>
+            </FieldContainer>
+            <FieldContainer>
+              <Label>Descrição:</Label>
+              <p>{data.descricao}</p>
+            </FieldContainer>
 
-            <ImageViewContainer>
-              <ImageViewArea red>
+            <ImageUploadContainer>
+              <ImageArea red onClick={() => handleImageClick(data.imagemAntes)}>
                 <img src={imageBefore || data.imagemAntes} alt="Imagem Antes" />
-              </ImageViewArea>
-              <ImageViewArea>
+              </ImageArea>
+              <ImageArea onClick={() => handleImageClick(data.imagemDepois)}>
                 <img src={imageAfter || data.imagemDepois} alt="Imagem Depois" />
-              </ImageViewArea>
-            </ImageViewContainer>
+              </ImageArea>
+            </ImageUploadContainer>
 
-            <EditButton onClick={handleEdit}>Editar</EditButton>
+            <ButtonGroup>
+              <button onClick={handleEdit}>Editar</button>
+            </ButtonGroup>
           </>
         )}
 
-        <BackButton onClick={() => navigate('/dashboard')}>Voltar</BackButton>
+        {modalOpen && (
+          <Modal>
+            <img src={modalImage} alt="Imagem Expandida" />
+            <CloseButton onClick={closeModal}>&times;</CloseButton>
+          </Modal>
+        )}
+
+        <ButtonGroup>
+          <button onClick={() => navigate('/dashboard')}>Voltar</button>
+        </ButtonGroup>
       </Container>
     </>
   );
