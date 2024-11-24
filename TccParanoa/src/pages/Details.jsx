@@ -160,6 +160,33 @@ const CloseButton = styled.button`
   }
 `;
 
+const StyledButton = styled.button`
+  padding: 0.8em 1.5em;
+  font-size: 1em;
+  color: rgb(45, 45, 45);
+  background-color: #fcb923; /* Cor principal */
+  border: 2px solid #fcb923; /* Borda com cor principal */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(252, 185, 35, 0.8); /* Cor ao passar o mouse */
+    border-color: rgba(252, 185, 35, 0.8);
+  }
+
+  &:active {
+    background-color: #d6a519; 
+    border-color: #d6a519;
+  }
+
+  &:disabled {
+    background-color: #aaaaaa; /* Cor para estado desativado */
+    cursor: not-allowed;
+    border-color: #aaaaaa;
+  }
+`;
+
 const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -342,8 +369,8 @@ const Details = () => {
             </ImageUploadContainer>
 
             <ButtonGroup>
-              <button onClick={handleSave}>Salvar</button>
-              <button onClick={handleCancel}>Cancelar</button>
+              <StyledButton onClick={handleSave}>Salvar</StyledButton>
+              <StyledButton onClick={handleCancel}>Cancelar</StyledButton>
             </ButtonGroup>
           </>
         ) : (
@@ -368,16 +395,18 @@ const Details = () => {
             </FieldContainer>
 
             <ImageUploadContainer>
-              <ImageArea red onClick={() => handleImageClick(data.imagemAntes)}>
-                <img src={imageBefore || data.imagemAntes} alt="Imagem Antes" />
+              <ImageArea red onClick={() => imageBefore && handleImageClick(imageBefore)}>
+                {imageBefore && <img src={imageBefore} alt="Imagem Antes" />}
               </ImageArea>
-              <ImageArea onClick={() => handleImageClick(data.imagemDepois)}>
-                <img src={imageAfter || data.imagemDepois} alt="Imagem Depois" />
+              <ImageArea onClick={() => imageAfter && handleImageClick(imageAfter)}>
+                {imageAfter && <img src={imageAfter} alt="Imagem Depois" />}
               </ImageArea>
             </ImageUploadContainer>
 
+
             <ButtonGroup>
-              <button onClick={handleEdit}>Editar</button>
+              <StyledButton onClick={handleEdit}>Editar</StyledButton>
+              <StyledButton onClick={() => navigate('/dashboard')}>Voltar</StyledButton>
             </ButtonGroup>
           </>
         )}
@@ -388,10 +417,6 @@ const Details = () => {
             <CloseButton onClick={closeModal}>&times;</CloseButton>
           </Modal>
         )}
-
-        <ButtonGroup>
-          <button onClick={() => navigate('/dashboard')}>Voltar</button>
-        </ButtonGroup>
       </Container>
     </>
   );
