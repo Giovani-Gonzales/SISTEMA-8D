@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import Navbar from '../components/Navbar';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Navbar from "../components/Navbar";
+
+const Description = styled.p`
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: white;
+`;
 
 const Container = styled.div`
   padding: 2em;
@@ -44,7 +50,7 @@ const ImageUploadContainer = styled(FlexRow)`
 const ImageArea = styled.div`
   flex: 1;
   max-width: 48%;
-  background-color: ${(props) => (props.red ? '#f44336' : '#4caf50')};
+  background-color: ${(props) => (props.red ? "#f44336" : "#4caf50")};
   padding: 1em;
   border-radius: 4px;
   text-align: center;
@@ -52,7 +58,7 @@ const ImageArea = styled.div`
   border: 1px solid #fcb923;
   position: relative;
 
-  aspect-ratio: 1; 
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -65,10 +71,10 @@ const ImageArea = styled.div`
   }
 
   img {
-    max-width: 90%; 
-    max-height: 90%; 
+    max-width: 90%;
+    max-height: 90%;
     border-radius: 4px;
-    object-fit: contain; 
+    object-fit: contain;
     margin-top: 1em;
   }
 
@@ -176,7 +182,7 @@ const StyledButton = styled.button`
   }
 
   &:active {
-    background-color: #d6a519; 
+    background-color: #d6a519;
     border-color: #d6a519;
   }
 
@@ -198,7 +204,7 @@ const Details = () => {
   const [imageBefore, setImageBefore] = useState(null);
   const [imageAfter, setImageAfter] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalImage, setModalImage] = useState('');
+  const [modalImage, setModalImage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -211,11 +217,13 @@ const Details = () => {
         setImageBefore(result.imagemAntes);
         setImageAfter(result.imagemDepois);
 
-        const responseResponsaveis = await fetch('http://localhost:3000/responsavel');
+        const responseResponsaveis = await fetch(
+          "http://localhost:3000/responsavel"
+        );
         const resultResponsaveis = await responseResponsaveis.json();
         setResponsaveis(resultResponsaveis);
       } catch (error) {
-        console.error('Erro ao carregar dados:', error);
+        console.error("Erro ao carregar dados:", error);
       } finally {
         setLoading(false);
       }
@@ -233,11 +241,14 @@ const Details = () => {
 
   const handleSave = async () => {
     try {
-      const updatedData = { ...editedData, imagemAntes: imageBefore, imagemDepois: imageAfter };
-
+      const updatedData = {
+        ...editedData,
+        imagemAntes: imageBefore,
+        imagemDepois: imageAfter,
+      };
       const response = await fetch(`http://localhost:3000/lista8d/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),
       });
 
@@ -246,10 +257,10 @@ const Details = () => {
         setData(updatedDataResult);
         setIsEditing(false);
       } else {
-        console.error('Erro ao atualizar dados');
+        console.error("Erro ao atualizar dados");
       }
     } catch (error) {
-      console.error('Erro ao salvar alterações:', error);
+      console.error("Erro ao salvar alterações:", error);
     }
   };
 
@@ -275,7 +286,7 @@ const Details = () => {
 
   const closeModal = () => {
     setModalOpen(false);
-    setModalImage('');
+    setModalImage("");
   };
 
   if (loading) {
@@ -295,7 +306,7 @@ const Details = () => {
         <Navbar />
         <Container>
           <p>Item não encontrado.</p>
-          <button onClick={() => navigate('/dashboard')}>Voltar</button>
+          <button onClick={() => navigate("/dashboard")}>Voltar</button>
         </Container>
       </>
     );
@@ -323,15 +334,15 @@ const Details = () => {
               <select
                 value={editedData.responsavel.id}
                 onChange={(e) =>
-                  handleChange('responsavel', {
+                  handleChange("responsavel", {
                     ...editedData.responsavel,
                     id: e.target.value,
-                    nome: responsaveis.find((resp) => resp.id === parseInt(e.target.value))?.nome,
+                    nome: e.target.value,
                   })
                 }
               >
                 {responsaveis.map((responsavel) => (
-                  <option key={responsavel.id} value={responsavel.id}>
+                  <option key={responsavel.id} value={responsavel.nome}>
                     {responsavel.nome}
                   </option>
                 ))}
@@ -344,27 +355,34 @@ const Details = () => {
                 <textarea
                   rows="5"
                   value={editedData.descricao}
-                  onChange={(e) => handleChange('descricao', e.target.value)}
+                  onChange={(e) => handleChange("descricao", e.target.value)}
                 />
               ) : (
-                <p style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>{data.descricao}</p>
+                <Description>{data.descricao}</Description>
               )}
             </FieldContainer>
 
+            <Label>Conformidade de Peças:</Label>
             <ImageUploadContainer>
-              <ImageArea red>
-                <label>
-                  Selecione a imagem "Antes"
-                  <input type="file" onChange={(e) => handleImageUpload(e, setImageBefore)} />
-                </label>
-                {imageBefore && <img src={imageBefore} alt="Imagem Antes" />}
-              </ImageArea>
               <ImageArea>
                 <label>
-                  Selecione a imagem "Depois"
-                  <input type="file" onChange={(e) => handleImageUpload(e, setImageAfter)} />
+                  Selecione a imagem "Peça Conforme"
+                  <input
+                    type="file"
+                    onChange={(e) => handleImageUpload(e, setImageAfter)}
+                  />
                 </label>
-                {imageAfter && <img src={imageAfter} alt="Imagem Depois" />}
+                {imageAfter && <img src={imageAfter} alt="Imagem Antes" />}
+              </ImageArea>
+              <ImageArea red>
+                <label>
+                  Selecione a imagem "Peça Não Conforme"
+                  <input
+                    type="file"
+                    onChange={(e) => handleImageUpload(e, setImageBefore)}
+                  />
+                </label>
+                {imageBefore && <img src={imageBefore} alt="Imagem Depois" />}
               </ImageArea>
             </ImageUploadContainer>
 
@@ -391,22 +409,37 @@ const Details = () => {
             </FieldContainer>
             <FieldContainer>
               <Label>Descrição:</Label>
-              <p>{data.descricao}</p>
+              <Description>{data.descricao}</Description>
             </FieldContainer>
 
+            <Label>Conformidade de Peças:</Label>
             <ImageUploadContainer>
-              <ImageArea red onClick={() => imageBefore && handleImageClick(imageBefore)}>
-                {imageBefore && <img src={imageBefore} alt="Imagem Antes" />}
+              <ImageArea
+                onClick={() => imageAfter && handleImageClick(imageAfter)}
+              >
+                {imageAfter ? (
+                  <img src={imageAfter} alt="Peça Conforme" />
+                ) : (
+                  <p>Peça Conforme</p>
+                )}
               </ImageArea>
-              <ImageArea onClick={() => imageAfter && handleImageClick(imageAfter)}>
-                {imageAfter && <img src={imageAfter} alt="Imagem Depois" />}
+              <ImageArea
+                red
+                onClick={() => imageBefore && handleImageClick(imageBefore)}
+              >
+                {imageBefore ? (
+                  <img src={imageBefore} alt="Peça Não Conforme" />
+                ) : (
+                  <p>Peça Não Conforme</p>
+                )}
               </ImageArea>
             </ImageUploadContainer>
 
-
             <ButtonGroup>
               <StyledButton onClick={handleEdit}>Editar</StyledButton>
-              <StyledButton onClick={() => navigate('/dashboard')}>Voltar</StyledButton>
+              <StyledButton onClick={() => navigate("/dashboard")}>
+                Voltar
+              </StyledButton>
             </ButtonGroup>
           </>
         )}

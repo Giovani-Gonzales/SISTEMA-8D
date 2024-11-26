@@ -3,7 +3,7 @@ import { AuthProvider } from './pages/AuthContext';
 import PrivateRoute from './pages/ProtectedRoute';
 import Login from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
-import Detalhes from './pages/Details'; // Importa o novo componente
+import Detalhes from './pages/Details'; 
 
 const App = () => {
   return (
