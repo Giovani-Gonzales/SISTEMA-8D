@@ -158,7 +158,7 @@ const ButtonClose = styled(ButtonSubmit)`
 `;
 
 const Navbar = () => {
-  const { logout } = useAuth();
+  const { logout, token } = useAuth();  // Certifique-se de que token está sendo passado de algum lugar, por exemplo, de um contexto de autenticação.
   const navigate = useNavigate();
   const offcanvasRef = useRef(null);
 
@@ -167,7 +167,7 @@ const Navbar = () => {
   const [password, setPassword] = useState('');
   const [department, setDepartment] = useState('');
   const [company, setCompany] = useState('');
-  const [companies, setCompanies] = useState([]); // State to store companies
+  const [companies, setCompanies] = useState([]);
 
   // Fetch the companies list on component mount
   useEffect(() => {
@@ -261,9 +261,12 @@ const Navbar = () => {
             </NavHeader>
             <NavBody className="offcanvas-body">
               <ul className="navbar-nav justify-content-end flex-grow-1 mt-3">
-                <NavbarItem className="nav-item" onClick={handleOpenForm}>
-                  <NavbarLink className="nav-link">Adicionar Usuário</NavbarLink>
-                </NavbarItem>
+                {/* Exibe o item "Adicionar Usuário" apenas se o token for "Paranoa" */}
+                {token === "Paranoa" && (
+                  <NavbarItem className="nav-item" onClick={handleOpenForm}>
+                    <NavbarLink className="nav-link">Adicionar Usuário</NavbarLink>
+                  </NavbarItem>
+                )}
 
                 <NavbarItem className="nav-item">
                   <NavbarLink className="nav-link" onClick={handleLogout}>

@@ -1,10 +1,9 @@
-import styled from 'styled-components';
-import { FaPlus, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import Form8D from './Form8D';
-import Navbar from '../components/Navbar';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import styled from "styled-components";
+import { FaPlus, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Form8D from "./Form8D";
+import Navbar from "../components/Navbar";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -80,8 +79,7 @@ const FloatingButton = styled.button`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: 0.25s;
 
-
-  &:hover{
+  &:hover {
     transform: scale(0.9);
   }
 `;
@@ -93,11 +91,11 @@ const PageNavigation = styled.div`
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 10px; 
-  z-index: 1; 
-  background-color: rgb(45,45,45);
-  padding:5px;
-  border-radius:100px;
+  gap: 10px;
+  z-index: 1;
+  background-color: rgb(45, 45, 45);
+  padding: 5px;
+  border-radius: 100px;
 `;
 
 const NavButton = styled.button`
@@ -121,7 +119,7 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   margin: 0 5px;
-  background-color: ${({ active }) => (active ? '#fcb923' : '#555')};
+  background-color: ${({ active }) => (active ? "#fcb923" : "#555")};
   border-radius: 50%;
   display: inline-block;
   cursor: pointer;
@@ -185,7 +183,6 @@ const Select = styled.select`
 const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
-  
   const [data, setData] = useState([]); // Dados obtidos da API lista8d
   const [clientes, setClientes] = useState([]); // Dados obtidos da API clientes
   const [responsaveis, setResponsaveis] = useState([]); // Dados obtidos da API responsavel
@@ -194,94 +191,98 @@ const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedRectangle, setSelectedRectangle] = useState(null);
+  const token = localStorage.getItem("authToken");
 
   const navigate = useNavigate();
 
-
   // Filtros
-  const [search, setSearch] = useState('');
-  const [clientFilter, setClientFilter] = useState('');
-  const [responsibleFilter, setResponsibleFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [clientFilter, setClientFilter] = useState("");
+  const [responsibleFilter, setResponsibleFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
 
   // Busca os dados das APIs
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response8D = await fetch('http://localhost:3000/lista8d');
+        const response8D = await fetch("http://localhost:3000/lista8d");
         const result8D = await response8D.json();
-  
-        // Inverte a ordem para começar com os mais novos
         setData(result8D.reverse());
-        setFilteredData(result8D.reverse()); // Filtrados também começam com os mais novos
-  
-        const responseClientes = await fetch('http://localhost:3000/clientes');
+        setFilteredData(result8D.reverse()); // Filtrados começam com os mais novos
+
+        const responseClientes = await fetch("http://localhost:3000/clientes");
         const resultClientes = await responseClientes.json();
         setClientes(resultClientes);
-  
+
         const responseResponsaveis = await fetch(
-          'http://localhost:3000/responsavel'
+          "http://localhost:3000/responsavel"
         );
         const resultResponsaveis = await responseResponsaveis.json();
         setResponsaveis(resultResponsaveis);
       } catch (error) {
-        console.error('Erro ao buscar dados das APIs:', error);
+        console.error("Erro ao buscar dados das APIs:", error);
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, []);
+
+  // Define automaticamente o filtro do cliente com base no token
+  useEffect(() => {
+    if (token !== "Paranoa" && clientes.length > 0) {
+      const clientName = token;
+      if (clientName) {
+        setClientFilter(clientName);
+      }
+    }
+  }, [token, clientes]);
 
   // Função para aplicar filtros
   const applyFilters = () => {
     let filtered = data;
-  
+
     // Filtro por nome do 8D
     if (search) {
       filtered = filtered.filter((item) =>
         item.numero8D.toLowerCase().includes(search.toLowerCase())
       );
     }
-  
+
     // Filtro por cliente
     if (clientFilter) {
-      filtered = filtered.filter(
-        (item) => item.cliente.nome === clientFilter
-      );
+      filtered = filtered.filter((item) => item.cliente.nome === clientFilter);
     }
-  
+
     // Filtro por responsável
     if (responsibleFilter) {
       filtered = filtered.filter(
         (item) => item.responsavel.nome === responsibleFilter
       );
     }
-  
-    // Filtro por data (mais novo para mais velho)
-    if (dateFilter === 'newest') {
-      // Ordena por data (mais novo primeiro)
-      filtered = filtered.sort((a, b) =>
-        new Date(b.dataCriacao) - new Date(a.dataCriacao)
+
+    // Filtro por data
+    if (dateFilter === "newest") {
+      filtered = filtered.sort(
+        (a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao)
       );
-      // Inverte a lista (último item primeiro, primeiro item último)
       filtered = filtered.reverse();
-    } else if (dateFilter === 'oldest') {
-      filtered = filtered.sort((a, b) =>
-        new Date(a.dataCriacao) - new Date(b.dataCriacao)
+    } else if (dateFilter === "oldest") {
+      filtered = filtered.sort(
+        (a, b) => new Date(a.dataCriacao) - new Date(b.dataCriacao)
       );
     }
-  
+
     setFilteredData(filtered);
     setCurrentPage(1); // Reseta a página ao aplicar filtro
   };
 
-  // Função de efeito que aplica os filtros sempre que algum dos campos mudar
+  // Chama os filtros sempre que um valor for alterado
   useEffect(() => {
     applyFilters();
-  }, [search, clientFilter, responsibleFilter, dateFilter]); // Dependências: qualquer filtro que mudar
+  }, [search, clientFilter, responsibleFilter, dateFilter]);
 
   // Controle de paginação
   const currentData = filteredData.slice(
@@ -302,7 +303,7 @@ const Dashboard = () => {
     <>
       <Navbar />
       <DashboardContainer>
-        <FilterContainer className='container'>
+        <FilterContainer className="container">
           <div>
             <FilterLabel>Buscar por nome do 8D</FilterLabel>
             <FilterInput
@@ -314,18 +315,22 @@ const Dashboard = () => {
           </div>
 
           <div>
-            <FilterLabel>Selecione o Cliente</FilterLabel>
-            <Select
-              value={clientFilter}
-              onChange={(e) => setClientFilter(e.target.value)} // Alterado aqui
-            >
-              <option value="">Selecione o Cliente</option>
-              {clientes.map((client) => (
-                <option key={client.id} value={client.nome}>
-                  {client.nome}
-                </option>
-              ))}
-            </Select>
+            {token === "Paranoa" ? (
+              <>
+                <FilterLabel>Selecione o Cliente</FilterLabel>
+                <Select
+                  value={clientFilter}
+                  onChange={(e) => setClientFilter(e.target.value)}
+                >
+                  <option value="">Selecione o Cliente</option>
+                  {clientes.map((client) => (
+                    <option key={client.id} value={client.nome}>
+                      {client.nome}
+                    </option>
+                  ))}
+                </Select>
+              </>
+            ) : null}
           </div>
 
           <div>
@@ -355,17 +360,17 @@ const Dashboard = () => {
             </Select>
           </div>
         </FilterContainer>
-        
+
         <DashboardContent>
-          <h1 style={{ color: '#fcb923' }}>LISTA DE 8D</h1>
+          <h1 style={{ color: "#fcb923" }}>LISTA DE 8D</h1>
         </DashboardContent>
         <DashboardContent>
           {loading ? (
-            <p style={{ height: '70vh', color: 'rgb(253, 185, 19)' }}>
+            <p style={{ height: "70vh", color: "rgb(253, 185, 19)" }}>
               Carregando dados...
             </p>
           ) : currentData.length === 0 ? (
-            <p style={{ height: '70vh', color: 'rgb(253, 185, 19)' }}>
+            <p style={{ height: "70vh", color: "rgb(253, 185, 19)" }}>
               Não há dados disponíveis.
             </p>
           ) : (
@@ -406,13 +411,15 @@ const Dashboard = () => {
                 />
               ))}
 
-              <NavButton onClick={handleNextPage} disabled={currentPage === totalPages}>
+              <NavButton
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
                 <FaArrowRight />
               </NavButton>
             </PageNavigation>
           )}
         </DashboardContent>
-
 
         {showForm && <Form8D onClose={handleCloseForm} />}
       </DashboardContainer>

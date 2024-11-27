@@ -156,7 +156,7 @@ const CloseButton = styled.button`
   right: 1em;
   background: none;
   color: white;
-  font-size: 2rem;
+  font-size: 3rem;
   border: none;
   cursor: pointer;
   transition: 0.3s;
@@ -205,6 +205,7 @@ const Details = () => {
   const [imageAfter, setImageAfter] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState("");
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -436,7 +437,9 @@ const Details = () => {
             </ImageUploadContainer>
 
             <ButtonGroup>
-              <StyledButton onClick={handleEdit}>Editar</StyledButton>
+              {token === "Paranoa" && (
+                <StyledButton onClick={handleEdit}>Editar</StyledButton>
+              )}
               <StyledButton onClick={() => navigate("/dashboard")}>
                 Voltar
               </StyledButton>

@@ -122,7 +122,7 @@ const LoginPage = () => {
       );
   
       if (user) {
-        const token = user.id; // Usando o `id` como token
+        const token = user.company; // Usando o `id` como token
         localStorage.setItem('authToken', token);
         login(token); // Atualiza o estado global
   
