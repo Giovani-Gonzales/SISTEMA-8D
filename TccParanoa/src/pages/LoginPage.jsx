@@ -153,7 +153,7 @@ const LoginPage = () => {
       <BoxLogin>
         <Logo src={DwLogo} alt="Logo DataWake" />
         <IntroText>
-          Bem-vindo ao <b style={{ color: 'rgb(253, 185, 19)' }}>SISTEMA 8D</b>!
+          Bem-vindo ao <b style={{ color: 'rgb(253, 185, 19)' }}>PORTAL 8D</b>!
         </IntroText>
 
         <form onSubmit={handleLogin}>
