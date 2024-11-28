@@ -1,43 +1,19 @@
 {
   "lista8d": [
     {
-      "id": "b435",
-      "numero8D": "123",
-      "responsavel": {
-        "nome": "Sem responsável"
-      },
-      "cliente": {
-        "nome": "teste"
-      },
-      "dataCriacao": "27/11/2024"
-    },
-    {
-      "id": "5a92",
-      "numero8D": "teneco",
+      "id": "03e2",
+      "numero8D": "62346",
       "responsavel": {
         "nome": "Sem responsável"
       },
       "cliente": {
         "nome": "TENNECO"
       },
-      "dataCriacao": "27/11/2024"
+      "dataCriacao": "28/11/2024"
     },
     {
-      "id": "bb51",
-      "numero8D": "3958258239852",
-      "responsavel": {
-        "id": "e002",
-        "nome": "Brenda Alves"
-      },
-      "cliente": {
-        "id": "41",
-        "nome": "TENNECO"
-      },
-      "dataCriacao": "27/11/2024"
-    },
-    {
-      "id": "b2e8",
-      "numero8D": "FIAT",
+      "id": "8b67",
+      "numero8D": "1111",
       "responsavel": {
         "id": "e001",
         "nome": "Giovani Gonzales"
@@ -46,31 +22,7 @@
         "id": "34",
         "nome": "STELLANTIS"
       },
-      "dataCriacao": "27/11/2024"
-    },
-    {
-      "id": "5551",
-      "numero8D": "999999",
-      "responsavel": {
-        "nome": "Sem responsável"
-      },
-      "cliente": {
-        "nome": "TENNECO"
-      },
-      "dataCriacao": "27/11/2024"
-    },
-    {
-      "id": "68cf",
-      "numero8D": "11188855654",
-      "responsavel": {
-        "id": "Alyne Viana",
-        "nome": "Alyne Viana"
-      },
-      "cliente": {
-        "id": "18",
-        "nome": "SCANIA"
-      },
-      "dataCriacao": "27/11/2024"
+      "dataCriacao": "28/11/2024"
     }
   ],
   "clientes": [
@@ -217,6 +169,13 @@
       "password": "123",
       "department": "123",
       "company": "TENNECO"
+    },
+    {
+      "id": "u4wto",
+      "email": "stelantis@gmail.com",
+      "password": "123",
+      "department": "RH",
+      "company": "STELLANTIS"
     }
   ]
 }

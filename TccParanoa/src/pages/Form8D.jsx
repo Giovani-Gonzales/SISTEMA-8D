@@ -256,13 +256,13 @@ const Form8D = ({ onClose }) => {
             ) : null}
 
             {/* Se o token não for Paranoa, o cliente é apenas um campo de texto */}
-            <Label>CLIENTE</Label>
+            <Label style={{display:"none"}}>CLIENTE</Label>
             {token !== "Paranoa" ? (
               <Input
                 type="text"
                 value={formData.cliente || ""}
                 readOnly
-                style={{ marginBottom: "15px", backgroundColor: "#ddd" }}
+                style={{ marginBottom: "15px", backgroundColor: "#ddd", display:"none" }}
               />
             ) : (
               <CustomSelect
@@ -270,7 +270,7 @@ const Form8D = ({ onClose }) => {
                 onChange={(selectedOption) =>
                   setFormData({ ...formData, cliente: selectedOption })
                 }
-                style={{ marginBottom: "15px" }}
+                style={{ marginBottom: "15px"}}
                 value={formData.cliente} // Preenche automaticamente com o nome do token ou valor selecionado
               />
             )}

@@ -16,17 +16,17 @@ const SelectInput = styled.select`
   }
 `;
 
-const Select = ({ options = [], onChange, ...props }) => {
+const Select = ({ options = [], onChange, value, ...props }) => {
   const handleSelectChange = (e) => {
     const selectedId = e.target.value;
-    const selectedOption = options.find(option => option.id === selectedId);
+    const selectedOption = options.find((option) => option.id === selectedId);
     if (onChange) {
       onChange(selectedOption);
     }
   };
 
   return (
-    <SelectInput onChange={handleSelectChange} {...props}>
+    <SelectInput onChange={handleSelectChange} value={value?.id || ""} {...props}>
       <option value="">Selecione uma opção</option>
       {options.length > 0 ? (
         options.map((option) => (
