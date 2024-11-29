@@ -113,7 +113,7 @@ const LoginPage = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:3000/accounts');
+      const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/accounts');
       const accounts = await response.json();
   
       // Verifica as credenciais
