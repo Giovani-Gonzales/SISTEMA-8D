@@ -206,17 +206,17 @@ const Dashboard = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response8D = await fetch("http://localhost:3000/lista8d");
+        const response8D = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/lista8d");
         const result8D = await response8D.json();
         setData(result8D.reverse());
         setFilteredData(result8D.reverse()); // Filtrados começam com os mais novos
 
-        const responseClientes = await fetch("http://localhost:3000/clientes");
+        const responseClientes = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/clientes");
         const resultClientes = await responseClientes.json();
         setClientes(resultClientes);
 
         const responseResponsaveis = await fetch(
-          "http://localhost:3000/responsavel"
+          "https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/responsavel"
         );
         const resultResponsaveis = await responseResponsaveis.json();
         setResponsaveis(resultResponsaveis);

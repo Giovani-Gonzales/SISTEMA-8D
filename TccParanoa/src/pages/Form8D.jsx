@@ -113,7 +113,7 @@ const Form8D = ({ onClose }) => {
 
     const fetchColaboradores = async () => {
       try {
-        const response = await fetch("http://localhost:3000/responsavel");
+        const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/responsavel");
         if (response.ok) {
           const data = await response.json();
           setColaboradores(
@@ -138,7 +138,7 @@ const Form8D = ({ onClose }) => {
 
     const fetchClientes = async () => {
       try {
-        const response = await fetch("http://localhost:3000/clientes");
+        const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/clientes");
         if (response.ok) {
           const data = await response.json();
           setClientes(
@@ -191,7 +191,7 @@ const Form8D = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/lista8d", {
+      const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/lista8d", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
