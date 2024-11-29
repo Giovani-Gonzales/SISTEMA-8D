@@ -113,7 +113,7 @@ const LoginPage = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/accounts');
+      const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/accounts');
       const accounts = await response.json();
   
       // Verifica as credenciais

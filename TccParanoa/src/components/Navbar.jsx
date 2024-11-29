@@ -173,7 +173,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/clientes');
+        const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/clientes');
         const data = await response.json();
         setCompanies(data); // Store the fetched companies in the state
       } catch (error) {
@@ -213,7 +213,7 @@ const Navbar = () => {
     };
 
     try {
-      const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/accounts', {
+      const response = await fetch('https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/accounts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

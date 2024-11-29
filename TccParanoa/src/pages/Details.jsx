@@ -211,7 +211,7 @@ const Details = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/lista8d/${id}`);
+        const response = await fetch(`https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/lista8d/${id}`);
         const result = await response.json();
         setData(result);
         setEditedData(result);
@@ -219,7 +219,7 @@ const Details = () => {
         setImageAfter(result.imagemDepois);
 
         const responseResponsaveis = await fetch(
-          "https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/responsavel"
+          "https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/responsavel"
         );
         const resultResponsaveis = await responseResponsaveis.json();
         setResponsaveis(resultResponsaveis);
@@ -247,7 +247,7 @@ const Details = () => {
         imagemAntes: imageBefore,
         imagemDepois: imageAfter,
       };
-      const response = await fetch(`https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/lista8d/${id}`, {
+      const response = await fetch(`https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/lista8d/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),

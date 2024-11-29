@@ -113,7 +113,7 @@ const Form8D = ({ onClose }) => {
 
     const fetchColaboradores = async () => {
       try {
-        const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/responsavel");
+        const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/responsavel");
         if (response.ok) {
           const data = await response.json();
           setColaboradores(
@@ -138,7 +138,7 @@ const Form8D = ({ onClose }) => {
 
     const fetchClientes = async () => {
       try {
-        const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/clientes");
+        const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/clientes");
         if (response.ok) {
           const data = await response.json();
           setClientes(
@@ -191,7 +191,7 @@ const Form8D = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/SISTEMA-8D/lista8d", {
+      const response = await fetch("https://my-json-server.typicode.com/Giovani-Gonzales/bd-8d/lista8d", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -256,7 +256,6 @@ const Form8D = ({ onClose }) => {
             ) : null}
 
             {/* Se o token não for Paranoa, o cliente é apenas um campo de texto */}
-            <Label style={{display:"none"}}>CLIENTE</Label>
             {token !== "Paranoa" ? (
               <Input
                 type="text"
@@ -265,7 +264,9 @@ const Form8D = ({ onClose }) => {
                 style={{ marginBottom: "15px", backgroundColor: "#ddd", display:"none" }}
               />
             ) : (
-              <CustomSelect
+              <>
+                <Label>CLIENTE</Label>
+                <CustomSelect
                 options={clientes}
                 onChange={(selectedOption) =>
                   setFormData({ ...formData, cliente: selectedOption })
@@ -273,6 +274,7 @@ const Form8D = ({ onClose }) => {
                 style={{ marginBottom: "15px"}}
                 value={formData.cliente} // Preenche automaticamente com o nome do token ou valor selecionado
               />
+              </>
             )}
           </InputGroup>
           <ButtonGroup>
